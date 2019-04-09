@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+  xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+    <servlet>
+        <display-name>HelloServlet</display-name>
+        <servlet-name>HelloServlet</servlet-name>
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>pikej</param-value>
+        </init-param>
+        <init-param>
+            <param-name>email</param-name>
+            <param-value>pikej@gmail.com</param-value>
+        </init-param>
+        <init-param>
+            <param-name>wwr.repo.path</param-name>
+            <param-value>${wwr.repo.path}</param-value>
+        </init-param>
+    </servlet>
+</web-app>
