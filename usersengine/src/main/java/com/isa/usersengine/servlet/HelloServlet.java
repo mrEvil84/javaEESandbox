@@ -24,6 +24,7 @@ public class HelloServlet extends HttpServlet {
     	// mvn dependency:resolve -> get external packages to .m2
 
     	// from web.xml props.
+    	resp.getWriter().println("Test2");
         resp.getWriter().println("Hello World from my first Servlet!");
         resp.getWriter().println("name : " + getInitParameter("name"));
         resp.getWriter().println("email : " + getInitParameter("email"));
