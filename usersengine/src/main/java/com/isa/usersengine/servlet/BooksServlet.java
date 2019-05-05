@@ -53,21 +53,21 @@ public class BooksServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        PrintWriter out = response.getWriter();
+        HttpServletResponse resp = this.setResponseHeaders(response);
 
         final StringBuilder builder = new StringBuilder();
 
         try (BufferedReader reader = request.getReader()) {
-            if (reader == null) {
-                out.println("Request body could not be read because it's empty.");
-                out.flush();
 
+            if (reader == null) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                this.printResponse(resp, "Request body could not be read because it's empty.");
             }
+
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
-
 
             Gson gson = new Gson();
             JsonReader jsonReader = new JsonReader(new StringReader(builder.toString()));
@@ -75,59 +75,35 @@ public class BooksServlet extends HttpServlet {
             Object data = gson.fromJson(jsonReader, Object.class);
 
 
-            //            response.addHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8080/usersengine/books"); // this fix CORS issue on Chrome
-            //            response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8080/usersengine/books");
-
-            //response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-            //            response.setHeader("Access-Control-Max-Age", "3600");
-            //            response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-
-            //	    	response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            //	    	response.setHeader("Access-Control-Allow-Methods", "POST,GET");
-            //	    	response.setHeader("Content-Type", "application/json");
-            //	    	response.setHeader("Accept", "application/json");
-            //	    	response.setCharacterEncoding("UTF-8");
-            response.setHeader("Content-type", "application/json");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Headers", "x-requested-with ");
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-
-            PrintWriter out2 = response.getWriter();
-            out2.print(new Gson().toJson(data));
-            out2.flush();
-
-
+            resp.setStatus(HttpServletResponse.SC_OK);
+            this.printResponse(resp, gson.toJson(data));
         } catch (final Exception e) {
 
-            PrintWriter out3 = response.getWriter();
-            response.setHeader("Content-type", "application/json");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Headers", "x-requested-with ");
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-
-            out3.println(e.toString());
-            out3.println(e.getMessage());
-            e.printStackTrace();
-
-            out.flush();
-            out3.flush();
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            this.printResponse(resp, e.toString());
+            this.printResponse(resp, e.getMessage());
         }
     }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-        //super.doOptions(req, resp);
-        response.setContentType("application/json");
-        response.setHeader("Access-Control-Allow-Origin", "*"); // this fix CORS issue on Chrome
+        this.printResponse(this.setResponseHeaders(response), "doOptions");
+    }
+
+    private HttpServletResponse setResponseHeaders(HttpServletResponse response) {
+        response.setHeader("Content-type", "application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with ");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
 
-        PrintWriter out = response.getWriter();
-        out.print("doOptions");
-        out.flush();
+        return response;
+    }
 
+    private void printResponse(HttpServletResponse response, String data) throws  IOException{
+        PrintWriter out3 = response.getWriter();
+        out3.println(data);
+        out3.flush();
     }
 
 
