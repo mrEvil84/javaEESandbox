@@ -15,9 +15,30 @@
 
 
 <form name="book-form" id="book-form">
-    Book name: <input type="text" id="book-form-name" />
-    Book author: <input type="text" id="book-form-author"/>
-    <input type="button" id="book-form-submit" value="Add book"/>
+    Book name: <input type="text" name="book-form-name" id="book-form-name" />
+    Book author: <input type="text" name="book-form-author" id="book-form-author"/>
+    <!--<input type="button" id="book-form-submit" name="add-book-button" value="Add book"/>-->
+    <input type="submit" id="book-form-submit" name="submit-book" value="Submit book"/>
+</form>
+<hr>
+<form>
+    <div><input type="text" name="a" value="1" id="a"></div>
+    <div><input type="text" name="b" value="2" id="b"></div>
+    <div><input type="hidden" name="c" value="3" id="c"></div>
+    <div>
+        <textarea name="d" rows="8" cols="40">4</textarea>
+    </div>
+    <div><select name="e">
+        <option value="5" selected="selected">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+    </select></div>
+    <div>
+        <input type="checkbox" name="f" value="8" id="f">
+    </div>
+    <div>
+        <input type="submit" name="g" value="Submit" id="g">
+    </div>
 </form>
 
 <!-- Optional JavaScript -->
